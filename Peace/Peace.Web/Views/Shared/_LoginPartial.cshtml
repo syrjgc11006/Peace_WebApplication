@@ -1,0 +1,55 @@
+﻿<style>
+    #loginul li {
+        float: left;
+        list-style: none;
+        padding: 15px 0;
+    }
+
+    #loginul {
+        margin: 0;
+        padding: 0;
+    }
+
+    .loga {
+        float: left;
+        display: inline-block;
+        padding-top: 13px;
+        margin-right: 5px;
+        color: forestgreen;
+    }
+
+    #logoutForm {
+        float: left;
+    }
+</style>
+@using Peace.Com.Mvc;
+@if (Request.IsAuthenticated)
+{
+    <text>
+        <div>
+            <span class="loga">
+                你好，
+                @Html.ActionLink(User.Identity.Name, "Index", "Home", new { area = "Admin" }, htmlAttributes: new { @class = "username", title = "管理" })!
+                @*@Html.RouteLink(User.Identity.Name, "Admin_default","")*@
+            </span>
+            @*@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+            {
+                <a class="loga" href="javascript:document.getElementById('logoutForm').submit()">
+                    <span class="glyphicon glyphicon-off">
+                    </span>
+                    注销
+                </a>
+            }*@
+            @Html.Link("注销", "/Account/LogOff", "注销", new { @class = "loga glyphicon glyphicon-off" })
+        </div>
+    </text>
+}
+else
+{
+    <li>
+        @Html.Link("登录", "/Account/Login", "登录", new { @class = "glyphicon glyphicon-log-in" })
+    </li>
+    <li>
+        @Html.Link("注册", "/Account/Register", "注册", new { @class = "glyphicon glyphicon-registration-mark" })
+    </li>
+}

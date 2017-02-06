@@ -1,0 +1,225 @@
+﻿@using Peace.Model.ViewModels.Article;
+@using Peace.Com.Tools;
+@using Peace.Com.Mvc;
+@using Peace.WebRepeater;
+@using Peace.Data;
+@{
+    Layout = "~/Administration/Views/Shared/_formLayout.cshtml";
+    List<SelectListItem> MoveCategories = ViewBag.MoveCategories as List<SelectListItem>;
+    List<SelectListItem> AllCategories = ViewBag.AllCategories as List<SelectListItem>;
+    List<SelectListItem> ArtcleProperties = ViewBag.ArtcleProperties as List<SelectListItem>;
+    var channelId = Request.Params["channel_id"];
+}
+<script type="text/javascript">
+    $(function () {
+        //图片延迟加载
+        $(".pic img").lazyload({ effect: "fadeIn" });
+        //点击图片链接
+        $(".pic img").click(function () {
+            var linkUrl = $(this).parent().parent().find(".foot a").attr("href");
+            if (linkUrl != "") {
+                location.href = linkUrl; //跳转到修改页面
+            }
+        });
+    });
+</script>
+
+@helper GetHeaderTempalte()
+{
+    <tr>
+        <th width="6%">选择</th>
+        <th align="left">标题</th>
+        <th align="left" width="12%">所属类别</th>
+        <th align="left" width="16%">发布时间</th>
+        <th align="left" width="65">排序</th>
+        <th align="left" width="120">属性</th>
+        <th width="10%">操作</th>
+    </tr>
+}
+@helper GetItemTemplate(object obj)
+{
+    var art = obj as Peace.Model.ViewModels.Article.ArticleModel;
+    <tr>
+        <td align="center">
+            @Html.CheckBox("chkId", new { @class = "checkall", @style = "vertical-align:middle;" })
+            @Html.Hidden("hidId", art.id)
+        </td>
+        <td>
+            <a href="article_edit.aspx?action=<%#DTEnums.ActionEnum.Edit ">
+                @art.title
+            </a>
+        </td>
+        <td>
+            @art.category_title
+        </td>
+        <td>@string.Format("{0:g}", art.CreateTime)</td>
+        <td>
+            @Html.TextBox("txtSortId", art.sort_id, new { @class = "sort" })
+            @*<asp:TextBox ID="txtSortId" runat="server" Text='<%#Eval("sort_id")%>' CssClass="sort" onkeydown="return checkNumber(event);" />*@
+        </td>
+        <td>
+            <div class="btn-tools">
+                @*< id="lbtnIsMsg" class="" />*@
+                @Html.LinkButton("lbtnIsMsg", null, HighlightStyles.Default, ButtonSizes.Default, null, TextIconLayout.IconText, new { @class = "msg selected" })
+                @Html.LinkButton("lbtnIsMsg", null, HighlightStyles.Default, ButtonSizes.Default, null, TextIconLayout.IconText, new { @class = "top selected" })
+                @*<asp:LinkButton ID="lbtnIsMsg" CommandName="lbtnIsMsg" runat="server" CssClass='<%# Convert.ToInt32(Eval("is_msg")) == 1 ? "msg selected" : "msg"%>' ToolTip='<%# Convert.ToInt32(Eval("is_msg")) == 1 ? "取消评论" : "设置评论"%>' />
+                    <asp:LinkButton ID="lbtnIsTop" CommandName="lbtnIsTop" runat="server" CssClass='<%# Convert.ToInt32(Eval("is_top")) == 1 ? "top selected" : "top"%>' ToolTip='<%# Convert.ToInt32(Eval("is_top")) == 1 ? "取消置顶" : "设置置顶"%>' />
+                    <asp:LinkButton ID="lbtnIsRed" CommandName="lbtnIsRed" runat="server" CssClass='<%# Convert.ToInt32(Eval("is_red")) == 1 ? "red selected" : "red"%>' ToolTip='<%# Convert.ToInt32(Eval("is_red")) == 1 ? "取消推荐" : "设置推荐"%>' />
+                    <asp:LinkButton ID="lbtnIsHot" CommandName="lbtnIsHot" runat="server" CssClass='<%# Convert.ToInt32(Eval("is_hot")) == 1 ? "hot selected" : "hot"%>' ToolTip='<%# Convert.ToInt32(Eval("is_hot")) == 1 ? "取消热门" : "设置热门"%>' />
+                    <asp:LinkButton ID="lbtnIsSlide" CommandName="lbtnIsSlide" runat="server" CssClass='<%# Convert.ToInt32(Eval("is_slide")) == 1 ? "pic selected" : "pic"%>' ToolTip='<%# Convert.ToInt32(Eval("is_slide")) == 1 ? "取消幻灯片" : "设置幻灯片"%>' />*@
+            </div>
+        </td>
+        <td align="center">
+            <a href="article_edit.aspx?action=<%#DTEnums.ActionEnum.Copy %>&channel_id=<%#this.channel_id %>&id=<%#Eval(" id")%>">复制</a>
+            <a href="article_edit.aspx?action=<%#DTEnums.ActionEnum.Edit %>&channel_id=<%#this.channel_id %>&id=<%#Eval(" id")%>">修改</a>
+        </td>
+    </tr>
+}
+
+@*给一个空的标题*@
+@helper GetImgHeaderTemplate()
+{
+
+}
+
+@helper GetImgItemTemplate(object obj)
+{
+    var art = obj as Peace.Model.ViewModels.Article.ArticleModel;
+    var divClass = art.img_url == "" ? "details nopic" : "details";
+    <li>
+        <div class="@divClass">
+            <div class="check">
+                @Html.CheckBox("chkId", new { @class = "checkall" })
+                @Html.Hidden("hidId", art.id)
+            </div>
+            @if (@art.img_url != "")
+            {
+                <div class="pic"><img src="../Administration/skin/default/loadimg.gif" data-original='@art.img_url' /></div><i class="absbg"></i>
+            }
+
+            <h1><span><a href="#">@art.title</a></span></h1>
+            <div class="remark">
+                @art.zhaiyao
+            </div>
+            <div class="tools">
+                @Html.LinkButton("lbtnIsMsg", null, HighlightStyles.Default, ButtonSizes.Default, null, TextIconLayout.IconText, new { @class = "msg selected" })
+                @Html.LinkButton("lbtnIsMsg", null, HighlightStyles.Default, ButtonSizes.Default, null, TextIconLayout.IconText, new { @class = "top selected" })
+                @Html.TextBox("txtSortId", @art.sort_id, new { @class = "sort" })
+            </div>
+            <div class="foot">
+                <p class="time">@string.Format("{0:yyyy-MM-dd HH:mm:ss}", @art.CreateTime)</p>
+                <a href="#" title="编辑" class="edit">编辑</a>
+                <a href="#" title="复制" class="copy">复制</a>
+            </div>
+        </div>
+    </li>
+}
+
+<div id="floatHead" class="toolbar-wrap">
+    <div class="toolbar">
+        <div class="box-wrap">
+            <a class="menu-btn"></a>
+            <div class="l-list">
+                <ul class="icon-list">
+                    <li><a id="btnAdd" class="add" href="javascript:void(0)"><i></i><span>新增</span></a></li>
+                    <li><a id="btnSave" class="save"><i></i><span>保存</span></a></li>
+                    <li><a id="btnAudit" class="lock"><i></i><span>审核</span></a></li>
+                    <li><a class="all"><i></i><span>全选</span></a></li>
+                    <li><a id="btnDelete" class="del"><i></i><span>删除</span></a></li>
+                </ul>
+                <div class="menu-list">
+                    <div class="rule-single-select">
+                        @Html.DropDownList("ddlMoveId", new SelectList(MoveCategories, "Value", "Text"))
+                    </div>
+                </div>
+            </div>
+            @using (@Html.BeginForm("Index", "Article", FormMethod.Get, htmlAttributes: new { id = "SearchForm" }))
+            {
+                <div>
+                    <div class="rule-single-select">
+                        @Html.DropDownList("ddlCategoryId", new SelectList(AllCategories, "Value", "Text"))
+                    </div>
+                    <div class="rule-single-select">
+                        @Html.DropDownList("ddlProperty", new SelectList(ArtcleProperties, "Value", "Text"))
+                    </div>
+                </div>
+
+                <div class="r-list">
+                    @Html.TextBox("txtKeywords", Request.QueryString.GetString("txtKeywords", string.Empty), new { @class = "keyword" })
+                    @Html.Button("Search", ButtonTypes.Submit, HighlightStyles.Primary, ButtonSizes.Default, null, TextIconLayout.IconText, null, new { @class = "btn-search" })
+                    @Html.Hidden("channel_id", channelId)
+                    @Html.LinkButton("图像列表视图", "javascript:;", iconType: IconTypes.SmallCross, htmlAttributes: new { @id = "lbtnViewImg", @class = "img-view", @title = "图像列表视图" })
+                    @Html.LinkButton("文字列表视图", "javascript:;", iconType: IconTypes.SmallCross, htmlAttributes: new { @id = "lbtnViewTxt", @class = "txt-view", @title = "文字列表视图" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="table-container">
+    @if (ViewBag.isLisView)
+    {
+         <!--文字列表-->
+        @Html.Repeater(new RepeaterFormData
+       {
+           Id = "repeater1",
+           Pager = Model,
+           ShowMore = false,
+           HeaderTemplate = GetHeaderTempalte,
+           ItemTemplate = GetItemTemplate
+       })
+        <div class="pagelist">
+            @Html.PagingResults(Model as Peace.Com.Pager)
+            @Html.PagingButton(Model as Peace.Com.Pager, PaginationMode.NumericNextPrevious)
+        </div>
+        <!--/文字列表-->
+    }
+    else
+    {
+        <div class="imglist">
+            <ul>
+                <!--图像列表-->
+                @Html.Repeater(new RepeaterFormData
+           {
+               Id = "repeater1",
+               Pager = Model,
+               ShowMore = false,
+               HeaderTemplate = GetImgHeaderTemplate,
+               ItemTemplate = GetImgItemTemplate
+           })
+            </ul>
+        </div>
+        <div class="pagelist">
+            @Html.PagingResults(Model as Peace.Com.Pager)
+            @Html.PagingButton(Model as Peace.Com.Pager, PaginationMode.NumericNextPrevious)
+        </div>
+
+        <!--/图像列表-->
+    }
+
+
+</div>
+
+<script language="javascript" type="text/javascript">
+    /*****************************************************************1.按钮事件*************************************************************************************/
+    //列表显示模式
+    $('#lbtnViewTxt').click(function () {
+        //利用form执行提交,实际上可以利用请求action方式
+        addCookie("article_list_view", "Txt", 4);
+        $('#SearchForm').attr('action', 'index');
+        $('#SearchForm').submit();
+    })
+    //图像显示模式
+    $('#lbtnViewImg').click(function () {
+        addCookie("article_list_view", "Img", 4);
+        $('#SearchForm').attr('action', 'index');
+        $('#SearchForm').submit();
+    })
+
+    //新增文章（按钮事件进行绑定，还可以用**.on('',function(){}  进行绑定事件)）
+    $('#btnAdd').click(function () {
+        var channelId = $.util.pageParams["channel_id"];
+        location.href = '@Url.Action("Edit", "Article", new { channel_id =channelId})';
+    });
+
+</script>

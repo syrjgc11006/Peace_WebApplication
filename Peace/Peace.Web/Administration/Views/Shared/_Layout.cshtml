@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Peace后台管理中心";
+}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=IE9" /><!--默认文档模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!--使BootStrap支持响应式布局，禁止屏幕缩放-->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="description" content="基于Bootstrap的响应式CMS后台管理站">
+    <meta name="author" content="Bruce">
+    <title>Peace后台管理中心</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Administration/Scripts/artdialog/ui-dialog.css" rel="stylesheet" type="text/css" />
+    <link href="~/Administration/Skin/default/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/Administration/Content/css/pagination.css" rel="stylesheet" type="text/css" />
+    <link href="~/Administration/Skin/layout.css" rel="stylesheet" type="text/css" />
+    <link href="~/Administration/Skin/base.css" rel="stylesheet" type="text/css" />
+
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/jquery/jquery-1.11.1.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/jquery/jquery.nicescroll.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/jquery/jquery.lazyload.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/scripts/jquery/Validform_v5.3.2.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/scripts/datepicker/WdatePicker.js"></script>
+
+    <!--加载miniui样式-->
+    @*<script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/boot.js"></script>*@
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/artdialog/dialog-plus-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/scripts/webuploader/webuploader.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/editor/kindeditor-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/tool/uploader.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/tool/layindex.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/tool/laymain.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/tool/common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/peace/peace.util.js"></script>
+
+    <!--自定义js-->
+    @*<script type="text/javascript" charset="utf-8" src="~/Administration/Scripts/peace/peace_ui.js"></script>*@
+    <script type="text/javascript">
+        //页面加载完成是时
+        $(function () {
+            //检测IE
+            if ('undefined' == typeof (document.body.style.maxHeight)) {
+                window.location.href = "ie6update.html";
+            }
+        });
+    </script>
+</head>
+<body class="mainbody">
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+</body>
+</html>

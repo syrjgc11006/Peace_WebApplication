@@ -1,0 +1,6 @@
+﻿@model Peace.Data.pl_manager
+@*首页上的用户头像的显示，为了满足头像自定义的更改需要，将这部分写在分部视图中*@
+<span style="display:block">
+    @User.Identity.Name
+    @Html.DisplayFor(model => model.role_id);
+</span>

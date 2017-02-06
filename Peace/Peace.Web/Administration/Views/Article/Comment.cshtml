@@ -1,0 +1,96 @@
+﻿@using Peace.Com.Tools;
+@using Peace.Com.Mvc;
+@using Peace.WebRepeater;
+@using Peace.Data;
+@using Peace.Model.ViewModels.Article;
+@{
+    Layout = "~/Administration/Views/Shared/_formLayout.cshtml";
+    var channelId = Request.Params["channel_id"];
+}
+
+@helper GetHeaderTempalte()
+{
+    //置为空
+}
+@helper GetItemTemplate(object obj)
+{
+    var art = obj as CommentModel;
+    <tr>
+        <td class="comment">
+            <div class="title">
+                <span class="note">
+                    <i>@art.user_name</i>
+                    <i>@art.add_time</i>
+                    <i class="reply"><a href="#">回复</a></i>
+                </span>
+                @Html.CheckBox("chkId", new { @class = "checkall" })
+                <b>@Html.Hidden("hidId", art.id)</b>
+                @art.articleTitle
+            </div>
+            <div class="ask">
+                @if (@art.is_lock == 1)
+                {
+                    <b class="audit" title="待审核"></b>
+                }
+                else
+                {
+                    @art.content
+                }
+                @if (@art.is_reply == 1)
+                {
+                    <div class="answer">
+                        <b>管理员回复：</b>@art.reply_content
+                        <span class="time">@art.reply_time</span>
+                    </div>
+                }
+            </div>
+        </td>
+    </tr>
+}
+
+<!--工具栏-->
+<div id="floatHead" class="toolbar-wrap">
+    <div class="toolbar">
+        <div class="box-wrap">
+            <a class="menu-btn"></a>
+            <div class="l-list">
+                <ul class="icon-list">
+                    <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
+                    <li><a onclick="return ExePostBack(&#39;btnAudit&#39;,&#39;审核通过后将在前台显示，是否继续？&#39;);" id="btnAudit" class="save" href="javascript:__doPostBack(&#39;btnAudit&#39;,&#39;&#39;)"><i></i><span>审核</span></a></li>
+                    <li><a onclick="return ExePostBack(&#39;btnDelete&#39;);" id="btnDelete" class="del" href="javascript:__doPostBack(&#39;btnDelete&#39;,&#39;&#39;)"><i></i><span>删除</span></a></li>
+                </ul>
+                <div class="menu-list">
+                    <div class="rule-single-select">
+                        <select name="ddlProperty" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ddlProperty\&#39;,\&#39;\&#39;)&#39;, 0)" id="ddlProperty">
+                            <option selected="selected" value="">所有属性</option>
+                            <option value="isLock">未审核</option>
+                            <option value="unLoock">已审核</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="r-list">
+                <input name="txtKeywords" type="text" id="txtKeywords" class="keyword" />
+                <a id="lbtnSearch" class="btn-search" href="javascript:__doPostBack(&#39;lbtnSearch&#39;,&#39;&#39;)">查询</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/工具栏-->
+<div class="table-container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+        @Html.Repeater(new RepeaterFormData
+       {
+           Id = "repeater1",
+           Pager = Model,
+           ShowMore = false,
+           HeaderTemplate = GetHeaderTempalte,
+           ItemTemplate = GetItemTemplate
+       })
+    </table>
+    <div class="pagelist">
+        @Html.PagingResults(Model as Peace.Com.Pager)
+        @Html.PagingButton(Model as Peace.Com.Pager, PaginationMode.NumericNextPrevious)
+    </div>
+</div>

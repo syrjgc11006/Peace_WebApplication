@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0C408C0E-09C7-43EC-83EF-8A58285A73BF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Peace.Web.Framework</RootNamespace>
+    <AssemblyName>Peace.Web.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Tunynet.Infrastructure, Version=2.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Tunynet.Infrastructure.2.2.0\lib\net40\Tunynet.Infrastructure.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\PeaceKeys.cs" />
+    <Compile Include="Common\PeaceRequest.cs" />
+    <Compile Include="Common\SiteCommon.cs" />
+    <Compile Include="Common\siteconfig.cs" />
+    <Compile Include="Common\SiteOperation.cs" />
+    <Compile Include="Common\Thumbnail.cs" />
+    <Compile Include="Common\UpLoad.cs" />
+    <Compile Include="Common\WaterMark.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="IWorkContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Themes\IThemeContext.cs" />
+    <Compile Include="Themes\ThemeableRazorViewEngine.cs" />
+    <Compile Include="Themes\ThemeableVirtualPathProviderViewEngine.cs" />
+    <Compile Include="Themes\ThemeContext.cs" />
+    <Compile Include="WebWorkContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="程序集说明.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Peace.Com\Peace.Com.csproj">
+      <Project>{388ef91f-6c8c-448e-af43-9cfc6161d796}</Project>
+      <Name>Peace.Com</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Peace.Core\Peace.Core.csproj">
+      <Project>{fbca57d6-ba1a-4881-89f9-138889bdb876}</Project>
+      <Name>Peace.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Peace.Data\Peace.Data.csproj">
+      <Project>{c58da58a-917a-454d-aac3-24b6d84512fe}</Project>
+      <Name>Peace.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Peace.Model\Peace.Model.csproj">
+      <Project>{416726d6-9b20-462a-86c9-c3f9157cb7f9}</Project>
+      <Name>Peace.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Peace.Service\Peace.Service.csproj">
+      <Project>{91b7cb45-d8a5-4683-8073-3f1091c505ff}</Project>
+      <Name>Peace.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

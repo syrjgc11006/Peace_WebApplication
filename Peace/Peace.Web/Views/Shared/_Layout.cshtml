@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+@*html5的特有声明方式*@
+<html lang="zh">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=IE9" /><!--默认文档模式-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <!--使BootStrap支持响应式布局，禁止屏幕缩放-->
+    <meta name="description" content="基于Bootstrap的响应式博客网站">
+    <meta name="author" content="Bruce">
+    <title>Peace Blog</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Bootstrap core CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-responsive.css" rel="stylesheet" />
+    <link href="~/Content/CSS/Site.css" rel="stylesheet" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="~/Scripts/respond.min.js"></script>
+    <script src="~/Scripts/jquery-1.8.2.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>               <!--支持Bootstrap中图片滚轮效果-->
+    <script src="~/Scripts/bootstrap-paginator.js"></script>
+    <script src="~/Scripts/jquery.pin.min.js"></script>
+    <script src="~/Content/layer/layer.js"></script>
+    <script src="~/Content/layer/extend/layer.ext.js"></script>
+    <script src="~/Content/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/jqthumb.js"></script>
+
+    @*<script src="~/Scripts/jqthumb.js"></script>*@
+</head>
+<body>
+
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="header-logo" href="/"></a>
+                @*<a class="navbar-brand">Peace Blog</a>*@
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active nav-item"><a href="@Url.Action("Index", "Home")">主页</a></li>
+                    <li class="nav-item"><a href="#">关于我</a></li>
+                    <li class="nav-item"><a href="#">联系方式</a></li>
+                </ul>
+                <div class="col-sm-3 " style="padding-top:8px">
+                    <div class="input-group">
+                        <input type="text" placeholder="请输入关键词" class="input-sm form-control"> <span class="input-group-btn">
+                            <button type="button" class="btn btn-sm btn-primary"> 搜索</button>
+                        </span>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    @Html.Partial("_LoginPartial")
+                </ul>
+                
+               
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    @*<header>
+        <div class="content-wrapper">
+            <div id="header">
+                <div class="navbar-inner">
+                    <div class="container">
+                        <a class="header-logo" href="/"></a>
+                        <a class="btn btn-navbar visible-phone" data-toggle="collapse" data-target=".nav-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <a class="btn btn-navbar slide_menu_left visible-tablet">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </a>
+                        <div class="top-menu visible-desktop">
+                            <ul class="pull-left">
+                                <li>
+                                    <a href="@Url.Action("Index", "Home")">
+                                        <span class="glyphicon glyphicon-home" style="color: #57b382"> 主页</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item product">
+                                    <a href="@Url.Action("BookWay", "Home")">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        关于本站
+                                    </a>
+                                </li>
+                                <li class="nav-item Topic">
+                                    <a href="#">
+                                        <span class="glyphicon glyphicon-leaf"></span>
+                                        留言墙
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="pull-right">
+                                @Html.Partial("_LoginPartial")
+                            </ul>
+                        </div>
+
+                        <div class="top-menu visible-phone visible-tablet">
+                            <ul class="pull-right">
+                                <li><a href="#"><span class="glyphicon glyphicon-home"></span></a></li>
+                                <li><a href="#"><span class="glyphicon glyphicon-user"></span></a></li>
+                                <li><a href="#"><span class="glyphicon glyphicon-leaf"></span></a></li>
+                                @*<li> @Html.Partial("_LoginPartial")</li>*@
+    @*</ul>
+        </div>*@
+    @*<div class="header-account">
+            @Html.Partial("_LoginPartial")
+        </div>
+        <ul class="pull-left">
+            <li class="nav-item ">
+                <a href="@Url.Action("Index", "Home")">
+                    <span class="glyphicon glyphicon-home" style="color: #57b382"></span>
+                    主页
+                </a>
+            </li>
+            <li class="nav-item product">
+                <a href="@Url.Action("BookWay", "Home")">
+                    <span class="glyphicon glyphicon-user"></span>
+                    关于本站
+                </a>
+            </li>
+            <li class="nav-item example">
+                <a href="#">
+                    <span class="glyphicon glyphicon-leaf"></span>
+                    留言墙
+                </a>
+            </li>
+        </ul>*@
+    @*</div>
+                    </div>
+                </div>
+            </div>
+        </header>*@
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer class="bs-docs-footer" role="contentinfo">
+        <div class="container">张学林博客 Design by DanceSmile 蜀ICP备11002373号-1</div>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+    window.onload = function () {
+        var pathname = location.pathname.substr(1);
+        var token;
+        if (pathname === "") {
+            token = "Home";
+        } else {
+            var patt = new RegExp("[a-z]{1,}", "i");
+            token = patt.exec(pathname)[0];
+        }
+        switch (token) {
+            case "Example":
+                changenavcss(".example");
+                break;
+            case "Download":
+                changenavcss(".download");
+                break;
+            case "Product":
+                changenavcss(".product");
+                break;
+            case "SoftPurchase":
+                changenavcss(".soft");
+                break;
+            case "Ask":
+                changenavcss(".train");
+                break;
+            case "Topic":
+                changenavcss(".forum");
+                break;
+            case "About":
+                changenavcss(".about");
+                break;
+            case "Home":
+                changenavcss(".home");
+                break;
+        }
+
+    }
+    function changenavcss(navItem) {
+        $(".top-menu").children(navItem).addClass("nav-active");
+        $(".top-menu").children(navItem).children("a").css("color", "#57b382");
+    }
+
+    $(function () {
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "positionClass": "toast-bottom-right",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        //给导航栏栏目添加下拉列表，当鼠标放在栏目上面时显示出来。
+        $(".top-menu li").bind("mouseenter", function () { $(this).children("ul").slideDown(); })
+                           .bind("mouseleave", function () { $(this).children("ul").slideUp(); });
+        $("ul.items").bind("mouseleave", function () {
+            //隐藏列表
+            $(this).slideUp();
+        });
+
+        //返回页面顶部
+        $(".jump-top a").bind("mouseenter", function () {
+
+        }).bind("mouseleave", function () {
+
+        });
+
+
+        $(window).scroll(function () {
+            if ($("body").scrollTop() == 0) {
+                $(".jump-top").css("visibility", "hidden");
+            } else {
+                $(".jump-top").css("visibility", "visible");
+            }
+
+        });
+    });
+</script>

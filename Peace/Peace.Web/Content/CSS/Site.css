@@ -1,0 +1,336 @@
+﻿/* ReSharper disable once Html.TagNotResolved */
+/*网站基本设置CSS*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+header, footer, nav, section {
+    display: block;
+}
+
+/*navbar 响应式导航条
+-----------------------------------------------------------*/
+/*导航条列表设置，背景色、字体大小*/
+.navbar-static-top {
+    margin-bottom: 1px;
+    background-color: black;
+    font-size: 15px;
+}
+
+/*首页Log*/
+.header-logo {
+    text-indent: -9999px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    -ms-background-size: contain;
+    background-size: contain;
+    background-image: url('../../Content/Photos/logo.png');
+    height: 50px;
+    width: 170px;
+    float: left;
+}
+
+/**传送带CSS*/
+.carousel-inner {
+    height: 250px;
+}
+
+/*幻灯片容器*/
+.slide {
+    margin: 0;
+}
+
+/*每一个幻灯片项*/
+.item {
+    padding: 0 0 0 0;
+    height: 250px;
+}
+
+html, body {
+    height: 100%;
+}
+
+
+
+/*footer 底部
+-----------------------------------------------------------*/
+
+footer {
+    background: transparent;
+    width: 100%;
+    clear: both;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+/* Body（含传送带轮播、文章内容、标签云、选项卡）
+-----------------------------------------------------------*/
+body {
+    font: 12px/1.5 'Microsoft Yahei', 'Simsun';
+    color: #666666;
+    background: #fff;
+    text-align: center;
+}
+
+/*传送带轮播图片总是在轮播组件下方一点很丑*/
+.carousel-inner .item {
+    padding-top: 0;
+}
+
+/*标签云*/
+.cloud {
+    width: 100%;
+    clear: both;
+    overflow: hidden;
+}
+
+    .cloud h3 {
+        line-height: 40px;
+        color: #38485A;
+        font-size: 18px;
+        border-bottom: 1px solid #E6E6E6;
+        height: 40px;
+    }
+
+    .cloud ul {
+        margin: 20px 0;
+    }
+
+        .cloud ul li {
+            line-height: 26px;
+            height: 26px;
+            display: block;
+            background: #999;
+            float: left;
+            padding: 0px 11px;
+            margin: 15px 15px 0 0;
+            border-radius: 8px;
+            -moz-transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s;
+        }
+
+            .cloud ul li a {
+                color: #FFF;
+            }
+
+            .cloud ul li:nth-child(8n-7) {
+                background: #8A9B0F;
+            }
+
+            .cloud ul li:nth-child(8n-6) {
+                background: #EB6841;
+            }
+
+            .cloud ul li:nth-child(8n-5) {
+                background: #3FB8AF;
+            }
+
+            .cloud ul li:nth-child(8n-4) {
+                background: #FE4365;
+            }
+
+            .cloud ul li:nth-child(8n-3) {
+                background: #FC9D9A;
+            }
+
+            .cloud ul li:nth-child(8n-2) {
+                background: #EDC951;
+            }
+
+            .cloud ul li:nth-child(8n-1) {
+                background: #C8C8A9;
+            }
+
+            .cloud ul li:nth-child(8n) {
+                background: #83AF9B;
+            }
+
+            .cloud ul li:first-child {
+                background: #036564;
+            }
+
+            .cloud ul li:last-child {
+                background: #3299BB;
+            }
+
+            .cloud ul li:hover {
+                border-radius: 0;
+                text-shadow: #000 1px 1px 1px;
+            }
+
+
+/* 切换卡 */
+.tabbable {
+    width: 100%;
+    margin: 0 0 20px 0;
+    overflow: hidden;
+    text-align: left;
+}
+
+.nav nav-tabs {
+    height: 32px;
+    border-bottom: solid 1px #EAEAEA;
+    font-size: 14px;
+}
+
+#tab li a {
+    float: left;
+    height: 32px;
+    cursor: pointer;
+    line-height: 32px;
+    list-style-type: none;
+    padding: 0 15px;
+}
+
+#tab li.cur a {
+    color: #fff;
+    background: #f77825;
+}
+
+.tab-pane ul {
+    padding: 10px 0 0 10px;
+    background: url(../../Content/img/ph2.png) no-repeat 10px 10px;
+}
+
+    .tab-pane ul li {
+        border-bottom: solid 1px #EAEAEA;
+        line-height: 30px;
+        height: 30px;
+        overflow: hidden;
+        font-size: 14px;
+        padding: 0px 0 0 30px;
+    }
+
+        .tab-pane ul li a {
+            display: block;
+        }
+
+            .tab-pane ul li a:hover {
+                color: #000;
+            }
+
+        .tab-pane ul li:hover {
+            border-bottom: #000 1px solid;
+        }
+/* 鼠标放上去的效果 */
+
+
+/*左文章列表*/
+.topnews {
+    margin: 20px 0;
+}
+
+    .topnews h2 {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 36px;
+        color: #333;
+        border-bottom: #db6d4c 4px solid;
+    }
+
+
+        .topnews h2 span {
+            float: right;
+            font-size: 12px;
+            font-weight: normal;
+        }
+
+            .topnews h2 span a {
+                display: inline-block;
+                padding: 0 5px;
+            }
+
+                .topnews h2 span a:hover {
+                    color: #000;
+                }
+
+.blogs {
+    padding: 30px 0;
+    position: relative;
+    border-bottom: #CCC 1px solid;
+    overflow: hidden;
+}
+
+    .blogs h3 {
+        font-size: 16px;
+        font-weight: bold;
+        transition: all .5s;
+        margin-bottom: 10px;
+    }
+
+        .blogs h3 a {
+            color: #474645;
+        }
+
+            .blogs h3 a:hover {
+                color: #066;
+                text-decoration: underline;
+            }
+
+    .blogs figure {
+        float: left;
+        width: 25%;
+        overflow: hidden;
+    }
+
+        .blogs figure img {
+            width: 100%;
+            margin: auto;
+            -moz-transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -o-transition: all 0.5s;
+            transition: all 0.5s;
+        }
+
+        .blogs figure:hover img {
+            -moz-transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            -o-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+        }
+
+    .blogs ul {
+        float: right;
+        line-height: 22px;
+        width: 72%;
+        color: #756F71;
+    }
+
+.autor {
+    overflow: hidden;
+    clear: both;
+    margin: 10px 0;
+    display: inline-block;
+    color: #838383;
+    width: 100%;
+}
+
+    .autor span {
+        margin: 0 10px 0 0;
+        padding-left: 20px;
+    }
+
+        .autor span a {
+            color: #759b08;
+        }
+
+            .autor span a:hover {
+                text-decoration: underline;
+            }
+/*.lm { background: url(../images/newsbg01.png) no-repeat left center }
+.dtime { background: url(../images/newsbg02.png) no-repeat left center }
+.viewnum { background: url(../images/newsbg04.png) no-repeat left center }
+.pingl { background: url(../images/newsbg03.png) no-repeat left center }*/
+.tit01 h3 {
+    line-height: 40px;
+    color: #38485A;
+    font-size: 18px;
+    border-bottom: 1px solid #E6E6E6;
+    height: 40px;
+}

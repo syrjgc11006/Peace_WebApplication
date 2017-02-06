@@ -1,0 +1,75 @@
+﻿@using Peace.Data;
+@model List<pl_article_category>
+@{
+    Layout = "~/Administration/Views/Shared/_formLayout.cshtml";
+    var channelId = Request.Params["channel_id"];
+}
+
+<!--工具栏-->
+<div id="floatHead" class="toolbar-wrap">
+    <div class="toolbar">
+        <div class="box-wrap">
+            <a class="menu-btn"></a>
+            <div class="l-list">
+                <ul class="icon-list">
+                    <li><a class="add" href="category_edit.aspx?action=Add&channel_id=6"><i></i><span>新增</span></a></li>
+                    <li><a id="btnSave" class="save" href="javascript:__doPostBack(&#39;btnSave&#39;,&#39;&#39;)"><i></i><span>保存</span></a></li>
+                    <li><a class="all" href="javascript:;" onclick="checkAll(this);"><i></i><span>全选</span></a></li>
+                    <li><a onclick="return ExePostBack(&#39;btnDelete&#39;,&#39;本操作会删除本类别及下属子类别，是否继续？&#39;);" id="btnDelete" class="del" href="javascript:__doPostBack(&#39;btnDelete&#39;,&#39;&#39;)"><i></i><span>删除</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/工具栏-->
+<!--/列表-->
+<div class="table-container">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ltable">
+        <tr>
+            <th width="6%">选择</th>
+            <th align="left" width="6%">编号</th>
+            <th align="left">类别名称</th>
+            <th align="left" width="12%">调用别名</th>
+            <th align="left" width="12%">排序</th>
+            <th width="12%">操作</th>
+        </tr>
+        @foreach (pl_article_category item in Model)
+        {
+            <tr>
+                <td align="center">
+                    @Html.CheckBox("chkId", new { @class = "checkall", @style = "vertical-align:middle;" })
+                    @Html.Hidden("hidId", item.id)
+                    @Html.Hidden("hidLayer", item.class_layer)
+                </td>
+                <td>@item.id</td>
+                <td>
+                    @if (item.class_layer == 1)
+                    {
+                        <span class="folder-open"></span>
+                    }
+                    else
+                    {
+                        var deep = @item.class_layer - 2;
+                        var width = deep * 24+"px";
+                        <span style="display: inline-block; width: @width;"></span>
+                        <span class="folder-line">
+                        </span><span class="folder-open"></span>
+                    }
+                    <a href="#">@item.title</a>
+                </td>
+                <td>@item.call_index</td>
+                <td>
+                    @Html.TextBox("txtSortId", @item.sort_id, new { @class = "sort" })
+                </td>
+                <td align="center">
+                    <a href="#">添加子类</a>
+                    <a href="#">修改</a>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<!--/列表-->
+<script language="javascript" type="text/javascript">
+
+</script>

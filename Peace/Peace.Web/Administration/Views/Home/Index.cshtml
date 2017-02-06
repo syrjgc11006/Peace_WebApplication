@@ -1,0 +1,64 @@
+﻿@using Peace.Data;
+@model pl_manager
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Administration/Views/Shared/_Layout.cshtml";
+}
+<!--全局菜单，一级菜单-->
+<a class="btn-paograms" onclick="togglePopMenu();"></a>
+<div id="pop-menu" class="pop-menu">
+    <div class="pop-box">
+        <h1 class="title"><i></i>导航菜单</h1>
+        <i class="close" onclick="togglePopMenu();">关闭</i>
+        <div class="list-box"></div>
+    </div>
+    <i class="arrow">箭头</i>
+</div>
+
+@*顶部*@
+<div class="main-top">
+    <a class="icon-menu"></a>
+    <div id="main-nav" class="main-nav"></div>
+    <div class="nav-right">
+        <div class="info">
+            <i></i>
+            @Html.Partial("UserAvatar", Model);
+        </div>
+        <div class="option">
+            <i></i>
+            <div class="drop-wrap">
+                <div class="arrow"></div>
+                <ul class="item">
+                    <li>
+                        <a href="../index.html" target="_blank">预览网站</a>
+                    </li>
+                    <li>
+                        <a href="../Admin/Home/Center" target="mainframe">管理中心</a>
+                    </li>
+                    <li>
+                        <a href="@Html.Action("UpdatePwd", "Manager")" onclick="linkMenuTree(false, '');" target="mainframe">修改密码</a>
+                    </li>
+                    <li>
+                        @using (Html.BeginForm("LogOff", "Manager", FormMethod.Post, new { id = "logoutForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <a>
+                                注销
+                            </a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@*左边菜单栏*@
+<div class="main-left">
+    <h1 class="logo"></h1>
+    <div id="sidebar-nav" class="sidebar-nav"></div>
+</div>
+
+@*中间内容部分*@
+<div class="main-container">
+    <iframe id="mainframe" name="mainframe" frameborder="0" src="~/Admin/Home/Center"></iframe>
+</div>

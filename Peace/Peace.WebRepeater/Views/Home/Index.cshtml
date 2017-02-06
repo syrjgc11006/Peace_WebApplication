@@ -1,0 +1,55 @@
+﻿@using Peace.WebRepeater;
+@model Peace.Core.Pager<Peace.WebRepeater.Controllers.HelloWorldModel>
+@{
+    ViewBag.Title = "Index";
+}
+
+@helper GetHeaderTempalte()
+{
+    <tr>
+        <th class="center" style="width:20px;">
+            <label class="position-relative">
+                <input type="checkbox" id="repeater1_chkAll" />
+                <span class="lbl"></span>
+            </label>
+        </th>
+        <th>ID</th>
+        <th>标题</th>
+        <th>
+            创建日期
+        </th>
+    </tr>
+}
+
+@*@helper GetItemTemplate(object obj)
+    {
+        var art = obj as Base_CatalogArticle;
+        <tr>
+            <td class="center" style="width:20px;">
+                <label class="position-relative">
+                    <input type="checkbox" value="@art.Id" name="repeater1_chk" />
+                    <input type="hidden" value="@art.CatalogId" name="CatalogId" />
+                    <span class="lbl"></span>
+                </label>
+            </td>
+            <td>@art.Id</td>
+            <td>
+                <a href="@Url.Action("Edit", new { caid = art.Id })" target="_blank" title="点击预览">@art.Article.Title</a>
+            </td>
+            <td>
+                @CommOp.ToTimeStr(art.Article.CreateTime)
+            </td>
+            @foreach (var catExt in SiteManager.Catalog.GetAllExts((int)ViewData["catId"]))
+            {
+                <td>@art.GetExt(catExt.Id)</td>
+            }
+        </tr>
+    }*@
+
+<div class="col-md-12">
+    @Html.Repeater(new RepeaterFormData
+        {
+            Id = "repeater1",
+            HeaderTemplate = GetHeaderTempalte
+        })
+</div>

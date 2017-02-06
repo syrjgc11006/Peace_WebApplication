@@ -1,0 +1,161 @@
+﻿@*该分部视图使用类似于asp.net中Repeater控件的思路，重复规律性地展示数据。
+    用户可以自定义头模板、单项模板以及底部模板。通常用于表格展示。
+    它即有传统分页功能，也具有“点击展示更多”的功能。它是SEO友好的。*@
+@using Peace.WebRepeater;
+@using System.Collections;
+@using Peace.Com.Tools;
+@using Peace.Core;
+@using Peace.Com;
+@model RepeaterFormData
+@{
+    if (Model.Pager == null)
+    {
+        Model.Pager = this.ViewContext.Controller.ViewData.Model as Pager;
+    }
+    if (Model.Id.IsEmpty())
+    {
+        Model.Id = "Repeater1";
+    }
+    if (Model.Fields == null)
+    {
+        var gType = Model.Pager.GetType().GetGenericArguments()[0];
+
+        Model.Fields = gType.GetProperties()
+            .Where(p=> p.CanRead)
+            .Select(p => new
+        TableField
+        {
+            Caption = p.Name,
+            FieldName = p.Name,
+        }).ToList();
+    }
+    var pager = Model.Pager as System.Collections.IEnumerable;
+    var headerTemplate = Model.HeaderTemplate ?? DefaultHeaderTempalte;
+    var itemTemplate = Model.ItemTemplate ?? DefaultItemTemplate;
+    var containerId = Model.Id + "_body"; // 内容容器的Id
+    var moreId = Model.Id + "_more"; // ‘点击加载更多’元素的ID
+    var bottomId = Model.Id + "_bottom"; //底部div的id
+    ViewData["checkName"] = Model.Id + "_chk";
+    ViewData["checkAllId"] = Model.Id + "_chkAll";
+
+    var viewBag = this.ViewContext.Controller.ViewBag;
+    bool firstLoad = !Peace.Com.Tools.CommOp.ToBool(viewBag.RepeaterScriptsLoaded);
+
+    //下面是获取翻页请求所需完整的URL地址
+    var _action = ViewContext.RouteData.Values["action"].ToString();
+    var routeValues = ViewContext.ReBuildRouteDict(); // ViewContext.RouteData.Values;
+    ViewData["RouteValues"] = routeValues;
+    routeValues["pageSize"] = Model.Pager.PageSize;
+}
+
+@helper DefaultHeaderTempalte()
+{
+    var routeValues = ViewContext.ReBuildRouteDict(); // ViewContext.RouteData.Values;
+    string sortField = CommOp.ToStr(routeValues["SortField"]);
+    string sortOrder = CommOp.ToStr(routeValues["SortOrder"]);
+    <tr>
+        @if (Model.ShowCheckBox)
+        {
+            <th class="center" style="width:20px;">
+                <label class="position-relative">
+                    <input type="checkbox" id="@ViewData["checkAllId"]" />
+                    <span class="lbl"></span>
+                </label>
+            </th>
+        }
+        @foreach (var field in Model.Fields)
+        {
+            <th @(field.Width > 0 ? "style='width:" + field.Width + "px'" : "")>
+                @if (field.Sortable)
+                {
+                    routeValues["SortField"] = field.FieldName;
+
+                    bool isSorted = false;
+                    if (sortField.Equals(field.FieldName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        routeValues["SortOrder"] = (sortOrder == "DESC") ? "ASC" : "DESC";
+                        isSorted = true;
+                    }
+                    else
+                    {
+                        routeValues["SortOrder"] = "DESC";
+                    }
+                    @Html.ActionLink(field.Caption, ViewContext.RouteData.Values["action"].ToString(), routeValues)
+
+                    if (isSorted)
+                    {
+                        <span class="@(routeValues["SortOrder"] == "DESC" ? "glyphicon glyphicon-triangle-top" : "glyphicon glyphicon-triangle-bottom")"></span>
+                    }
+                }
+                else
+                {
+                    @field.Caption
+                }
+            </th>
+        }
+    </tr>
+}
+@helper DefaultItemTemplate(object item)
+{
+    <tr>
+        @if (Model.ShowCheckBox)
+        {
+            <td class="center" style="width:20px;">
+                <label class="position-relative">
+                    <input type="checkbox" value="@RefHelper.GetValue(item, Model.KeyField)" name="@ViewData["checkName"]" />
+                    <span class="lbl"></span>
+                </label>
+            </td>
+        }
+        @foreach (var field in Model.Fields)
+        {
+            <td>
+                @RefHelper.GetValue(item, field.FieldName)
+            </td>
+        }
+    </tr>
+}
+<table id="@Model.Id" border="0" cellspacing="0" cellpadding="0" class="ltable">
+    @{
+        <thead>
+            @headerTemplate()
+        </thead>
+        @*在containerId之间的代码会在ajax请求后生成下一页的内容并附加到当前页之后*@
+        <tbody id="@containerId">
+            @foreach (object item in pager)
+            {
+                @itemTemplate(item)
+            }
+        </tbody>
+    }
+</table>
+<div id="@bottomId">
+    @if (Model.ShowMore)
+    {
+        if (Model.Pager.PageIndex < Model.Pager.PageCount)
+        {
+            routeValues["page"] = Model.Pager.PageIndex + 1;
+            <a id="@moreId" class="col-md-12 text-center" href="@Url.Action(_action, routeValues)">点击加载更多...</a>
+        }
+        else if (Model.Pager.PageCount > 1)
+        {
+            <a class="col-md-12 text-center">没有更多了</a>
+        }
+    }
+    @if (Model.ShowNumberPager && Model.Pager.PageCount > 1)
+    {
+        @*<div class="col-md-12">
+            @Html.Partial("_Pager", pager)
+        </div>*@
+    }
+</div>
+@if (firstLoad)
+{
+    <script src="~/Scripts/webframe.repeater.js" type="text/javascript"></script>
+}
+<script type="text/javascript">
+    //$('#@Model.Id').repeater({ ShowFocusRowStyle: @(Model.ShowFocusRowStyle ? "true" : "false") });
+</script>
+@{
+    viewBag.RepeaterScriptsLoaded = true;
+}

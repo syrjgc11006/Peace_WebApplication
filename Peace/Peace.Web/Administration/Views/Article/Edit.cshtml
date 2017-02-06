@@ -1,0 +1,336 @@
+﻿@using Peace.Web.Framework.Common;
+@{
+    Layout = "~/Administration/Views/Shared/_formLayout.cshtml";
+    List<SelectListItem> AllCategories = ViewBag.AllCategories as List<SelectListItem>;
+    siteconfig siteConfig = SiteCommon.Instance().loadConfig();
+}
+<script type="text/javascript">
+    $(function () {
+        //初始化表单验证
+        $("#form1").initValidform();
+
+        //初始化编辑器
+        var editor = KindEditor.create('.editor', {
+            width: '100%',
+            height: '350px',
+            filterMode: false, //默认不过滤HTML
+            resizeType: 1,
+            uploadJson: '@SiteCommon.Instance().UploadAttachment()?action=EditorFile&IsWater=1',
+            fileManagerJson: '@SiteCommon.Instance().UploadAttachment()?action=ManagerFile',
+            allowFileManager: true
+        });
+        var editorMini = KindEditor.create('.editor-mini', {
+            width: '100%',
+            height: '250px',
+            filterMode: false, //默认不过滤HTML
+            resizeType: 1,
+            uploadJson: '@SiteCommon.Instance().UploadAttachment()?action=EditorFile&IsWater=1',
+            items: [
+				'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+				'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+				'insertunorderedlist', '|', 'emoticons', 'image', 'link']
+        });
+
+        //初始化上传控件
+        $(".upload-img").InitUploader({ filesize:'@siteConfig.imgsize', sendurl:'@SiteCommon.Instance().UploadAttachment()', swf: "~/Scripts/webuploader/uploader.swf", filetypes: "@siteConfig.fileextension" });
+        $(".upload-video").InitUploader({ filesize: "@siteConfig.videosize", sendurl: '@SiteCommon.Instance().UploadAttachment()', swf: "../../Scripts/webuploader/uploader.swf", filetypes: "@siteConfig.videoextension" });
+        $(".upload-album").InitUploader({ btntext: "批量上传", multiple: true, water: true, thumbnail: true, filesize: "@siteConfig.imgsize", sendurl: '@SiteCommon.Instance().UploadAttachment()', swf: "../../scripts/webuploader/uploader.swf" });
+
+        //设置封面图片的样式
+        $(".photo-list ul li .img-box img").each(function () {
+            if ($(this).attr("src") == $("#hidFocusPhoto").val()) {
+                $(this).parent().addClass("selected");
+            }
+        });
+
+        //创建上传附件
+        $(".attach-btn").click(function () {
+            showAttachDialog();
+        });
+
+        //创建商品规格
+        $(".spec-btn").click(function () {
+            showSpecDialog();
+        });
+
+        //赋值规格市场价格
+        $("#field_control_market_price").blur(function () {
+            $("#div_spec__container").find("input[name='spec_market_price']").val($(this).val());
+        });
+        //赋值规格销售价格
+        $("#field_control_sell_price").blur(function () {
+            $("#div_spec__container").find("input[name='spec_sell_price']").val($(this).val());
+        });
+    });
+
+    //初始化附件窗口
+    function showAttachDialog(obj) {
+        var objNum = arguments.length;
+        var attachDialog = top.dialog({
+            id: 'attachDialogId',
+            title: "上传附件",
+            url: 'dialog/dialog_attach.aspx',
+            width: 500,
+            height: 180,
+            onclose: function () {
+                var liHtml = this.returnValue; //获取返回值
+                if (liHtml.length > 0) {
+                    $("#showAttachList").children("ul").append(liHtml);
+                }
+            }
+        }).showModal();
+        //如果是修改状态，将对象传进去
+        if (objNum == 1) {
+            attachDialog.data = obj;
+        }
+    }
+    //删除附件节点
+    function delAttachNode(obj) {
+        $(obj).parent().remove();
+    }
+
+    //初始化规格窗口
+    function showSpecDialog() {
+        var d = top.dialog({
+            id: 'specDialogId',
+            padding: 0,
+            title: "商品规格",
+            url: 'dialog/dialog_spec_item.aspx'
+        }).showModal();
+        //将容器对象传进去
+        d.data = $("#item_box");
+    }
+    //初始化会员组价格窗口
+    function showPriceDialog(obj) {
+        var d = top.dialog({
+            padding: 0,
+            title: "会员组价格",
+            url: 'dialog/dialog_group_price.aspx',
+            width: 400
+        }).showModal();
+        //将对象传进去
+        d.data = obj;
+    }
+    //计算出最小的市场价格
+    function countMarketPrice(obj) {
+        var objName = $(obj).attr("name");
+        var minValue = parseFloat($(obj).val());
+        $("input[name='" + objName + "']").each(function () {
+            if ($(this).val().length > 0) {
+                if (parseFloat($(this).val()) < minValue) {
+                    minValue = parseFloat($(this).val());
+                }
+            }
+        });
+        $("#field_control_market_price").val(minValue);
+    }
+    //计算最小的销售价格
+    function countSellPrice(obj) {
+        var objName = $(obj).attr("name");
+        var minValue = parseFloat($(obj).val());
+        $("input[name='" + objName + "']").each(function () {
+            if ($(this).val().length > 0) {
+                if (parseFloat($(this).val()) < minValue) {
+                    minValue = parseFloat($(this).val());
+                }
+            }
+        });
+        $("#field_control_sell_price").val(minValue);
+    }
+    //计算库存总数量
+    function countStockQuantity(obj) {
+        var objName = $(obj).attr("name");
+        var countValue = 0;
+        $("input[name='" + objName + "']").each(function () {
+            if ($(this).val().length > 0) {
+                countValue += parseFloat($(this).val());
+            }
+        });
+        $("#field_control_stock_quantity").val(countValue);
+    }
+</script>
+<form id="form1">
+    <!--内容-->
+    <div id="floatHead" class="content-tab-wrap">
+        <div class="content-tab">
+            <div class="content-tab-ul-wrap">
+                <ul>
+                    <li><a class="selected" href="javascript:;">基本信息</a></li>
+                    <li><a href="javascript:;">详细描述</a></li>
+                    <li><a href="javascript:;">SEO选项</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="field_tab_content" class="tab-content" style="display:none"></div>
+
+    <div class="tab-content">
+        <dl>
+            <dt>所属父类别</dt>
+            <dd>
+                <div class="rule-single-select">
+                    @Html.DropDownList("ddlCategoryId", new SelectList(AllCategories, "Value", "Text"), new { @datatype = "*", @sucmsg = " " })
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>显示状态</dt>
+            <dd>
+                <div class="rule-multi-radio">
+                    <span id="rblStatus"><input id="rblStatus_0" type="radio" name="rblStatus" value="0" checked="checked" /><label for="rblStatus_0">正常</label><input id="rblStatus_1" type="radio" name="rblStatus" value="1" /><label for="rblStatus_1">待审核</label><input id="rblStatus_2" type="radio" name="rblStatus" value="2" /><label for="rblStatus_2">不显示</label></span>
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>推荐类型</dt>
+            <dd>
+                <div class="rule-multi-checkbox">
+                    <span id="cblItem"><input id="cblItem_0" type="checkbox" name="cblItem$0" value="1" /><label for="cblItem_0">允许评论</label><input id="cblItem_1" type="checkbox" name="cblItem$1" value="1" /><label for="cblItem_1">置顶</label><input id="cblItem_2" type="checkbox" name="cblItem$2" value="1" /><label for="cblItem_2">推荐</label><input id="cblItem_3" type="checkbox" name="cblItem$3" value="1" /><label for="cblItem_3">热门</label><input id="cblItem_4" type="checkbox" name="cblItem$4" value="1" /><label for="cblItem_4">幻灯片</label></span>
+                </div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>内容标题</dt>
+            <dd>
+                <input name="txtTitle" type="text" id="txtTitle" class="input normal" datatype="*2-100" sucmsg=" " />
+                <span class="Validform_checktip">*标题最多100个字符</span>
+            </dd>
+        </dl>
+
+        <dl>
+            <dt>Tags标签</dt>
+            <dd>
+                <input name="txtTags" type="text" id="txtTags" class="input normal" datatype="*0-500" sucmsg=" " />
+                <span class="Validform_checktip">多个可用英文逗号分隔开，如：a,b</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>封面图片</dt>
+            <dd>
+                <input name="txtImgUrl" type="text" id="txtImgUrl" class="input normal upload-path" />
+                <div class="upload-box upload-img"></div>
+            </dd>
+        </dl>
+        <dl>
+            <dt>排序数字</dt>
+            <dd>
+                <input name="txtSortId" type="text" value="99" id="txtSortId" class="input small" datatype="n" sucmsg=" " />
+                <span class="Validform_checktip">*数字，越小越向前</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>浏览次数</dt>
+            <dd>
+                <input name="txtClick" type="text" value="0" id="txtClick" class="input small" datatype="n" sucmsg=" " />
+                <span class="Validform_checktip">点击浏览该信息自动+1</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>发布时间</dt>
+            <dd>
+                <input name="txtAddTime" type="text" id="txtAddTime" class="input rule-date-input" onfocus="WdatePicker({dateFmt:&#39;yyyy-MM-dd HH:mm:ss&#39;})" datatype="/^\s*$|^\d{4}\-\d{1,2}\-\d{1,2}\s{1}(\d{1,2}:){2}\d{1,2}$/" errormsg="请选择正确的日期" sucmsg=" " />
+                <span class="Validform_checktip">不选择默认当前发布时间</span>
+            </dd>
+        </dl>
+
+
+    </div>
+
+    <div class="tab-content" style="display:none">
+        <dl>
+            <dt>调用别名</dt>
+            <dd>
+                <input name="txtCallIndex" type="text" id="txtCallIndex" class="input normal" datatype="/^\s*$|^[a-zA-Z0-9\-\_]{2,50}$/" sucmsg=" " />
+                <span class="Validform_checktip">*别名访问，非必填，不可重复</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>URL链接</dt>
+            <dd>
+                <input name="txtLinkUrl" type="text" maxlength="255" id="txtLinkUrl" class="input normal" />
+                <span class="Validform_checktip">填写后直接跳转到该网址</span>
+            </dd>
+        </dl>
+        <dl id="div_source">
+            <dt><span id="div_source_title">信息来源</span></dt>
+            <dd>
+                <input name="field_control_source" type="text" value="本站" id="field_control_source" class="input normal" />
+                <span id="div_source_tip" class="Validform_checktip">非必填，最多50个字符</span>
+            </dd>
+        </dl>
+        <dl id="div_author">
+            <dt><span id="div_author_title">文章作者</span></dt>
+            <dd>
+                <input name="field_control_author" type="text" id="field_control_author" class="input normal" datatype="s0-50" sucmsg=" " />
+                <span id="div_author_tip" class="Validform_checktip">非必填，最多50个字符</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>内容摘要</dt>
+            <dd>
+                <textarea name="txtZhaiyao" rows="2" cols="20" id="txtZhaiyao" class="input" datatype="*0-255" sucmsg=" "></textarea>
+                <span class="Validform_checktip">不填写则自动截取内容前255字符</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>内容描述</dt>
+            <dd>
+                <textarea name="txtContent" id="txtContent" class="editor" style="visibility:hidden;"></textarea>
+            </dd>
+        </dl>
+    </div>
+
+    <div class="tab-content" style="display:none">
+        <dl>
+            <dt>SEO标题</dt>
+            <dd>
+                <input name="txtSeoTitle" type="text" maxlength="255" id="txtSeoTitle" class="input normal" datatype="*0-100" sucmsg=" " />
+                <span class="Validform_checktip">255个字符以内</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>SEO关健字</dt>
+            <dd>
+                <textarea name="txtSeoKeywords" rows="2" cols="20" id="txtSeoKeywords" class="input" datatype="*0-255" sucmsg=" "></textarea>
+                <span class="Validform_checktip">以“,”逗号区分开，255个字符以内</span>
+            </dd>
+        </dl>
+        <dl>
+            <dt>SEO描述</dt>
+            <dd>
+                <textarea name="txtSeoDescription" rows="2" cols="20" id="txtSeoDescription" class="input" datatype="*0-255" sucmsg=" "></textarea>
+                <span class="Validform_checktip">255个字符以内</span>
+            </dd>
+        </dl>
+    </div>
+    <!--/内容-->
+    <!--工具栏-->
+    <div class="page-footer">
+        <div class="btn-wrap">
+            <input type="submit" name="btnSubmit" value="提交保存" id="btnSubmit" class="btn" />
+            <input name="btnReturn" type="button" value="返回上一页" class="btn yellow" onclick="javascript:history.back(-1);" />
+        </div>
+    </div>
+    <!--/工具栏-->
+</form>
+<script type="text/javascript">
+    debugger
+    //初始化加载页面时，ajax请求后台获取扩展控件信息
+    var channelId = $.util.pageParams["channel_id"];
+    $(function(){
+        $.ajax({
+            url:"@Url.Action("CreateOtherField", "Article", new { area = "Admin" })",
+            type:"post",
+            data:{channel_id:channelId},
+            success:function(){
+                //获取扩展属性实体，通过实体属性对控件动态赋值，此处可以考察js能力
+
+            }
+        });
+    });
+    //点击保存，获取
+    $('#btnSubmit').click(function(){
+        //alert("sdafasd");
+    });
+</script>

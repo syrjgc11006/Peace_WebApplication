@@ -1,0 +1,60 @@
+﻿@*该分部视图用bootstrap展示分页控件
+    它是_Repeater的子视图，也可以单独被调用*@
+@using Peace.WebRepeater;
+@using Peace.Com.Tools;
+@model Peace.Com.Pager
+@{
+    Layout = null;
+    if (Model.PageCount < 2)
+    {
+        return;
+    }
+    var _action = ViewContext.RouteData.Values["action"].ToString();
+    var routeValues = ViewContext.ReBuildRouteDict(); // ViewContext.RouteData.Values;
+}
+
+<div style="text-align:center">
+    <ul class="pagination">
+        @if (Model.PageIndex == 1)
+        {
+            <li><a href="###">&laquo;</a></li>
+        }
+        else
+        {
+            routeValues["page"] = Model.PageIndex - 1;
+
+            <li>
+                @Html.ActionLink("«", _action, routeValues)
+            </li>
+        }
+        @foreach (int p in Model.Pages)
+        {
+            if (p < 0)
+            {
+                <li><a>- - -</a></li>
+            }
+            else if (p == Model.PageIndex)
+            {
+                <li class="active">
+                    <a href="#">@p</a>
+                </li>
+            }
+            else
+            {
+                routeValues["page"] = p;
+                <li>@Html.ActionLink(p.ToString(), _action, routeValues)</li>
+            }
+        }
+        @if (Model.PageIndex == Model.PageCount)
+        {
+            <li><a href="###">&raquo;</a></li>
+        }
+        else
+        {
+            routeValues["page"] = Model.PageIndex + 1;
+            <li>
+                @Html.ActionLink("»", _action, routeValues)
+            </li>
+        }
+    </ul>
+</div>

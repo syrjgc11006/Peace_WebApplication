@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C58DA58A-917A-454D-AAC3-24B6D84512FE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Peace.Data</RootNamespace>
+    <AssemblyName>Peace.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EntityBase\BaseEntity.cs" />
+    <Compile Include="BizEntity\Address\Address.cs" />
+    <Compile Include="BizEntity\Content\pl_article.cs" />
+    <Compile Include="BizEntity\Content\pl_article_albums.cs" />
+    <Compile Include="BizEntity\Content\pl_article_attach.cs" />
+    <Compile Include="BizEntity\Content\pl_article_attribute_field.cs" />
+    <Compile Include="BizEntity\Content\pl_article_attribute_value.cs" />
+    <Compile Include="BizEntity\Content\pl_article_category.cs" />
+    <Compile Include="BizEntity\Content\pl_article_comment.cs" />
+    <Compile Include="BizEntity\Content\pl_channel.cs" />
+    <Compile Include="BizEntity\Content\pl_channel_field.cs" />
+    <Compile Include="BizEntity\Content\pl_channel_site.cs" />
+    <Compile Include="BizEntity\Content\pl_link.cs" />
+    <Compile Include="BizEntity\Content\pl_manager.cs" />
+    <Compile Include="BizEntity\Content\pl_manager_log.cs" />
+    <Compile Include="BizEntity\Content\pl_manager_role.cs" />
+    <Compile Include="BizEntity\Content\pl_manager_role_value.cs" />
+    <Compile Include="BizEntity\Content\pl_navigation.cs" />
+    <Compile Include="BizEntity\Security\PermissionRecord.cs" />
+    <Compile Include="BizEntity\Users\SystemUserRoleNames.cs" />
+    <Compile Include="BizEntity\Users\User.cs" />
+    <Compile Include="BizEntity\Users\UserExtensions.cs" />
+    <Compile Include="BizEntity\Users\UserRole.cs" />
+    <Compile Include="DataProvider\EfRepository.cs" />
+    <Compile Include="DataProvider\IDbContext.cs" />
+    <Compile Include="DataProvider\IRepository.cs" />
+    <Compile Include="DataProvider\PeaceObjectContext.cs" />
+    <Compile Include="EntityBase\Enums\ArticlePropertyEnum.cs" />
+    <Compile Include="EntityBase\Enums\ActionEnum.cs" />
+    <Compile Include="Mapping\Address\AddressMap.cs" />
+    <Compile Include="Mapping\Content\pl_articleMap.cs" />
+    <Compile Include="Mapping\Content\pl_article_albumsMap.cs" />
+    <Compile Include="Mapping\Content\pl_article_attachMap.cs" />
+    <Compile Include="Mapping\Content\pl_article_attribute_fieldMap.cs" />
+    <Compile Include="Mapping\Content\pl_article_attribute_valueMap.cs" />
+    <Compile Include="Mapping\Content\pl_article_categoryMap.cs" />
+    <Compile Include="Mapping\Content\pl_article_commentMap.cs" />
+    <Compile Include="Mapping\Content\pl_channelMap.cs" />
+    <Compile Include="Mapping\Content\pl_channel_fieldMap.cs" />
+    <Compile Include="Mapping\Content\pl_channel_siteMap.cs" />
+    <Compile Include="Mapping\Content\pl_linkMap.cs" />
+    <Compile Include="Mapping\Content\pl_managerMap.cs" />
+    <Compile Include="Mapping\Content\pl_manager_logMap.cs" />
+    <Compile Include="Mapping\Content\pl_manager_roleMap.cs" />
+    <Compile Include="Mapping\Content\pl_manager_role_valueMap.cs" />
+    <Compile Include="Mapping\Content\pl_navigationMap.cs" />
+    <Compile Include="Mapping\Security\PermissionRecordMap.cs" />
+    <Compile Include="Mapping\User\UserMap.cs" />
+    <Compile Include="Mapping\User\UserRoleMap.cs" />
+    <Compile Include="PeaceEntityTypeConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Peace.Com\Peace.Com.csproj">
+      <Project>{388ef91f-6c8c-448e-af43-9cfc6161d796}</Project>
+      <Name>Peace.Com</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Peace.Core\Peace.Core.csproj">
+      <Project>{fbca57d6-ba1a-4881-89f9-138889bdb876}</Project>
+      <Name>Peace.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Mapping\Common\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

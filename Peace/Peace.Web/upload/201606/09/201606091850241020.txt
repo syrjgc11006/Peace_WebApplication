@@ -1,0 +1,4 @@
+25	合同明细	Contract Detail	合同附件	23	NULL
+10	合同正文	Text	合同附件	23	NULL
+12	合同扫描件	Scanning Copy	合同附件	23	NULL
+26	其他	Other	合同附件	23	NULL
